@@ -5,14 +5,13 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
-		"build": "npx vite build",
+		"build": "vite build",
 		"lint": "eslint .",
 		"preview": "vite preview"
 	},
 	"dependencies": {
 		"@stripe/stripe-js": "^4.3.0",
 		"axios": "^1.7.5",
-		"e-shop": "file:..",
 		"framer-motion": "^11.3.30",
 		"lucide-react": "^0.435.0",
 		"react": "^18.3.1",
