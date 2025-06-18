@@ -1,5 +1,4 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-
 import HomePage from "./pages/HomePage";
 import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
@@ -7,6 +6,7 @@ import AdminPage from "./pages/AdminPage";
 import CategoryPage from "./pages/CategoryPage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer"; // <<--- Import Footer
 import { Toaster } from "react-hot-toast";
 import { useUserStore } from "./stores/useUserStore";
 import { useEffect } from "react";
@@ -61,6 +61,7 @@ function App() {
 				</Routes>
 			</div>
 			<Toaster />
+			<Footer /> {/* <<--- Add Footer here */}
 		</div>
 	);
 }
