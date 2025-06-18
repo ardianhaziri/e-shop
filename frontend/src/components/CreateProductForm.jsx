@@ -66,6 +66,20 @@ const CreateProductForm = () => {
 					/>
 				</div>
 
+				 <div>
+        <label htmlFor="stock" className="block text-sm font-medium text-gray-300">Stock</label>
+        <input
+          id="stock"
+          name="stock"
+          type="number"
+          min="0"
+          value={newProduct.stock}
+          onChange={(e) => setNewProduct({ ...newProduct, stock: parseInt(e.target.value, 10) })}
+          className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+          required
+        />
+      </div>
+
 				<div>
 					<label htmlFor='description' className='block text-sm font-medium text-gray-300'>
 						Description

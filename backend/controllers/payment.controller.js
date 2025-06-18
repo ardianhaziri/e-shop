@@ -91,6 +91,13 @@ export const checkoutSuccess = async (req, res) => {
 				);
 			}
 
+			for (const item of order.items) {
+  await Product.findByIdAndUpdate(
+    item.product, // or item.productId
+    { $inc: { stock: -item.quantity } }
+  );
+}
+
 			// create a new Order
 			const products = JSON.parse(session.metadata.products);
 			const newOrder = new Order({

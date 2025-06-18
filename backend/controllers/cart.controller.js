@@ -29,6 +29,14 @@ export const addToCart = async (req, res) => {
 			user.cartItems.push(productId);
 		}
 
+		const product = await Product.findById(productId);
+if (!product) {
+  return res.status(404).json({ message: "Product not found" });
+}
+if (product.stock <= 0) {
+  return res.status(400).json({ message: "Product is out of stock" });
+}
+
 		await user.save();
 		res.json(user.cartItems);
 	} catch (error) {
@@ -78,3 +86,4 @@ export const updateQuantity = async (req, res) => {
 		res.status(500).json({ message: "Server error", error: error.message });
 	}
 };
+
