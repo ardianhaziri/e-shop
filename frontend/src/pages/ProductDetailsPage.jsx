@@ -41,7 +41,7 @@ const ProductDetailsPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-950 via-gray-900 to-emerald-950">
+     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-950 via-gray-900 to-emerald-950">
       <div className="relative bg-gray-800/90 backdrop-blur-lg rounded-2xl shadow-2xl flex flex-col md:flex-row p-10 max-w-4xl w-full animate-fade-in">
         <div className="flex-1 flex items-center justify-center mb-10 md:mb-0 md:mr-10">
           <img
@@ -61,22 +61,10 @@ const ProductDetailsPage = () => {
               </span>
             </div>
             <p className="text-gray-300 text-lg mb-4">{product.description}</p>
-            <div className="mb-6">
-              <span
-                className={`inline-block px-4 py-1 rounded-full text-sm font-semibold ${
-                  inStock ? "bg-emerald-700 text-white" : "bg-red-600 text-white"
-                }`}
-              >
-                {inStock ? `In Stock (${product.stock})` : "Out of Stock"}
-              </span>
-            </div>
           </div>
           <button
             onClick={handleAddToCart}
-            disabled={!inStock}
-            className={`flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-4 px-8 rounded-lg shadow-lg transition-all duration-300 text-xl mt-2 ${
-              !inStock ? "opacity-60 cursor-not-allowed" : ""
-            }`}
+            className="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-4 px-8 rounded-lg shadow-lg transition-all duration-300 text-xl mt-2"
           >
             <AiOutlineShoppingCart className="text-2xl" />
             Add to Cart

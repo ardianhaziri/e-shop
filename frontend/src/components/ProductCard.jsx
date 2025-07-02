@@ -8,18 +8,15 @@ const ProductCard = ({ product }) => {
   const { user } = useUserStore();
   const { addToCart } = useCartStore();
 
-  const handleAddToCart = () => {
-    if (!user) {
-      toast.error("Please login to add products to cart", { id: "login" });
-      return;
-    }
-    if (product.stock <= 0) {
-      toast.error("Product is out of stock");
-      return;
-    }
-    addToCart(product);
-  };
-
+const handleAddToCart = () => {
+		if (!user) {
+			toast.error("Please login to add products to cart", { id: "login" });
+			return;
+		} else {
+			// add to cart
+			addToCart(product);
+		}
+	};
   return (
     <div className="flex w-full relative flex-col overflow-hidden rounded-lg border border-gray-700 shadow-lg">
       <Link to={`/product/${product._id}`}>
@@ -35,23 +32,14 @@ const ProductCard = ({ product }) => {
             <span className="text-3xl font-bold text-emerald-400">${product.price}</span>
           </p>
         </div>
-        <div className="mb-3">
-          <span className={`text-xs ${product.stock > 0 ? "text-emerald-400" : "text-red-400"}`}>
-            {product.stock > 0 ? `In Stock: ${product.stock}` : "Out of Stock"}
-          </span>
-        </div>
         <button
-          className={`flex items-center justify-center rounded-lg px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4 focus:ring-emerald-300 ${
-            product.stock > 0
-              ? "bg-emerald-600 hover:bg-emerald-700"
-              : "bg-gray-600 cursor-not-allowed"
-          }`}
-          onClick={handleAddToCart}
-          disabled={product.stock <= 0}
-        >
-          <ShoppingCart size={22} className="mr-2" />
-          Add to cart
-        </button>
+					className='flex items-center justify-center rounded-lg bg-emerald-600 px-5 py-2.5 text-center text-sm font-medium
+					 text-white hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-300'
+					onClick={handleAddToCart}
+				>
+					<ShoppingCart size={22} className='mr-2' />
+					Add to cart
+				</button>
       </div>
     </div>
   );
