@@ -64,10 +64,15 @@ const ProductDetailsPage = () => {
           </div>
           <button
             onClick={handleAddToCart}
-            className="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-4 px-8 rounded-lg shadow-lg transition-all duration-300 text-xl mt-2"
+            className={`flex items-center justify-center gap-2 font-semibold py-4 px-8 rounded-lg shadow-lg transition-all duration-300 text-xl mt-2 ${
+              inStock
+                ? 'bg-emerald-600 hover:bg-emerald-500 text-white'
+                : 'bg-red-600 cursor-not-allowed text-white'
+            }`}
+            disabled={!inStock}
           >
             <AiOutlineShoppingCart className="text-2xl" />
-            Add to Cart
+            {inStock ? 'Add to Cart' : 'Out of Stock'}
           </button>
         </div>
       </div>

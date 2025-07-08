@@ -8,6 +8,8 @@ const ProductCard = ({ product }) => {
   const { user } = useUserStore();
   const { addToCart } = useCartStore();
 
+  const inStock = product.stock > 0;
+
 const handleAddToCart = () => {
 		if (!user) {
 			toast.error("Please login to add products to cart", { id: "login" });
@@ -33,12 +35,16 @@ const handleAddToCart = () => {
           </p>
         </div>
         <button
-					className='flex items-center justify-center rounded-lg bg-emerald-600 px-5 py-2.5 text-center text-sm font-medium
-					 text-white hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-300'
+					className={`flex items-center justify-center rounded-lg px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4 ${
+						inStock
+							? 'bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-300'
+							: 'bg-red-600 cursor-not-allowed'
+					}`}
 					onClick={handleAddToCart}
+					disabled={!inStock}
 				>
 					<ShoppingCart size={22} className='mr-2' />
-					Add to cart
+					{inStock ? 'Add to cart' : 'Out of Stock'}
 				</button>
       </div>
     </div>
