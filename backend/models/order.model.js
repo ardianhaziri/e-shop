@@ -7,6 +7,11 @@ const orderSchema = new mongoose.Schema(
 			ref: "User",
 			required: true,
 		},
+		orderNumber: {
+			type: Number,
+			required: true,
+			unique: true,
+		},
 		products: [
 			{
 				product: {

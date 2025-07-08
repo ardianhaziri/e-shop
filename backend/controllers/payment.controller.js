@@ -1,5 +1,6 @@
 import Coupon from "../models/coupon.model.js";
 import Order from "../models/order.model.js";
+import Counter from "../models/counter.model.js";
 import { stripe } from "../lib/stripe.js";
 
 export const createCheckoutSession = async (req, res) => {
@@ -83,6 +84,7 @@ export const checkoutSuccess = async (req, res) => {
                 success: true,
                 message: "Order already created for this session.",
                 orderId: existingOrder._id,
+                orderNumber: existingOrder.orderNumber,
             });
         }
 		const session = await stripe.checkout.sessions.retrieve(sessionId);
@@ -102,8 +104,10 @@ export const checkoutSuccess = async (req, res) => {
 
 			// create a new Order
 			const products = JSON.parse(session.metadata.products);
+			const orderNumber = await getNextOrderNumber();
 			const newOrder = new Order({
 				user: session.metadata.userId,
+				orderNumber: orderNumber,
 				products: products.map((product) => ({
 					product: product.id,
 					quantity: product.quantity,
@@ -119,6 +123,7 @@ export const checkoutSuccess = async (req, res) => {
 				success: true,
 				message: "Payment successful, order created, and coupon deactivated if used.",
 				orderId: newOrder._id,
+				orderNumber: newOrder.orderNumber,
 			});
 		}
 	} catch (error) {
@@ -126,6 +131,15 @@ export const checkoutSuccess = async (req, res) => {
 		res.status(500).json({ message: "Error processing successful checkout", error: error.message });
 	}
 };
+
+async function getNextOrderNumber() {
+	const counter = await Counter.findOneAndUpdate(
+		{ id: "orderNumber" },
+		{ $inc: { seq: 1 } },
+		{ new: true, upsert: true }
+	);
+	return counter.seq;
+}
 
 async function createStripeCoupon(discountPercentage) {
 	const coupon = await stripe.coupons.create({
