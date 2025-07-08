@@ -8,6 +8,12 @@ const FeaturedProducts = ({ featuredProducts }) => {
 
 	const { addToCart } = useCartStore();
 
+	const handleAddToCart = (product) => {
+		if (product.stock > 0) {
+			addToCart(product);
+		}
+	};
+
 	useEffect(() => {
 		const handleResize = () => {
 			if (window.innerWidth < 640) setItemsPerPage(1);
@@ -58,12 +64,16 @@ const FeaturedProducts = ({ featuredProducts }) => {
 												${product.price.toFixed(2)}
 											</p>
 											<button
-												onClick={() => addToCart(product)}
-												className='w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2 px-4 rounded transition-colors duration-300 
-												flex items-center justify-center'
+												onClick={() => handleAddToCart(product)}
+												className={`w-full font-semibold py-2 px-4 rounded transition-colors duration-300 flex items-center justify-center ${
+													product.stock > 0
+														? 'bg-emerald-600 hover:bg-emerald-500 text-white'
+														: 'bg-red-600 cursor-not-allowed text-white'
+												}`}
+												disabled={product.stock <= 0}
 											>
 												<ShoppingCart className='w-5 h-5 mr-2' />
-												Add to Cart
+												{product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
 											</button>
 										</div>
 									</div>

@@ -12,6 +12,7 @@ const CreateProductForm = () => {
 		price: "",
 		category: "",
 		image: "",
+		stock: 0,
 	});
 
 	const { createProduct, loading } = useProductStore();
@@ -20,7 +21,7 @@ const CreateProductForm = () => {
 		e.preventDefault();
 		try {
 			await createProduct(newProduct);
-			setNewProduct({ name: "", description: "", price: "", category: "", image: "" });
+			setNewProduct({ name: "", description: "", price: "", category: "", image: "", stock: 0 });
 		} catch {
 			console.log("error creating a product");
 		}
