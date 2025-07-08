@@ -65,6 +65,57 @@ export const createProduct = async (req, res) => {
 	}
 };
 
+export const updateProduct = async (req, res) => {
+	try {
+		const { id } = req.params;
+		const { name, description, price, image, category, stock } = req.body;
+
+		const product = await Product.findById(id);
+
+		if (!product) {
+			return res.status(404).json({ message: "Product not found" });
+		}
+
+		let cloudinaryResponse = null;
+
+		// If a new image is provided, upload it to Cloudinary
+		if (image && image !== product.image) {
+			// Delete old image if it exists
+			if (product.image) {
+				const publicId = product.image.split("/").pop().split(".")[0];
+				try {
+					await cloudinary.uploader.destroy(`products/${publicId}`);
+					console.log("deleted old image from cloudinary");
+				} catch (error) {
+					console.log("error deleting old image from cloudinary", error);
+				}
+			}
+
+			// Upload new image
+			cloudinaryResponse = await cloudinary.uploader.upload(image, { folder: "products" });
+		}
+
+		// Update product with new data
+		const updatedProduct = await Product.findByIdAndUpdate(
+			id,
+			{
+				name,
+				description,
+				price,
+				image: cloudinaryResponse?.secure_url || product.image,
+				category,
+				stock: Number(stock) || 0,
+			},
+			{ new: true }
+		);
+
+		res.json(updatedProduct);
+	} catch (error) {
+		console.log("Error in updateProduct controller", error.message);
+		res.status(500).json({ message: "Server error", error: error.message });
+	}
+};
+
 export const deleteProduct = async (req, res) => {
 	try {
 		const product = await Product.findById(req.params.id);
