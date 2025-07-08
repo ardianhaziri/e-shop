@@ -9,7 +9,7 @@ const FeaturedProducts = ({ featuredProducts }) => {
 	const { addToCart } = useCartStore();
 
 	const handleAddToCart = (product) => {
-		if (product.stock > 0) {
+		if (product.stock != null && Number(product.stock) > 0) {
 			addToCart(product);
 		}
 	};
@@ -66,14 +66,14 @@ const FeaturedProducts = ({ featuredProducts }) => {
 											<button
 												onClick={() => handleAddToCart(product)}
 												className={`w-full font-semibold py-2 px-4 rounded transition-colors duration-300 flex items-center justify-center ${
-													product.stock > 0
+													(product.stock != null && Number(product.stock) > 0)
 														? 'bg-emerald-600 hover:bg-emerald-500 text-white'
 														: 'bg-red-600 cursor-not-allowed text-white'
 												}`}
-												disabled={product.stock <= 0}
+												disabled={!(product.stock != null && Number(product.stock) > 0)}
 											>
 												<ShoppingCart className='w-5 h-5 mr-2' />
-												{product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
+												{(product.stock != null && Number(product.stock) > 0) ? 'Add to Cart' : 'Out of Stock'}
 											</button>
 										</div>
 									</div>

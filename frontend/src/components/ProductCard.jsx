@@ -8,7 +8,7 @@ const ProductCard = ({ product }) => {
   const { user } = useUserStore();
   const { addToCart } = useCartStore();
 
-  const inStock = product.stock > 0;
+  const inStock = product.stock != null && Number(product.stock) > 0;
 
 const handleAddToCart = () => {
 		if (!user) {

@@ -27,7 +27,7 @@ const ProductDetailsPage = () => {
 
   if (!product) return <div className="text-white p-8">Loading...</div>;
 
-  const inStock = product.stock > 0;
+  const inStock = product.stock != null && Number(product.stock) > 0;
 
   const handleAddToCart = () => {
     if (!user) {

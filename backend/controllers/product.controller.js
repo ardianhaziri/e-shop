@@ -55,7 +55,7 @@ export const createProduct = async (req, res) => {
 			price,
 			image: cloudinaryResponse?.secure_url ? cloudinaryResponse.secure_url : "",
 			category,
-			stock: stock || 0,
+			stock: Number(stock) || 0,
 		});
 
 		res.status(201).json(product);
