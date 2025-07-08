@@ -1,6 +1,7 @@
 import Coupon from "../models/coupon.model.js";
 import Order from "../models/order.model.js";
 import { stripe } from "../lib/stripe.js";
+import { getNextOrderNumber } from "../utils/orderNumber.js";
 
 export const createCheckoutSession = async (req, res) => {
 	try {
@@ -83,6 +84,7 @@ export const checkoutSuccess = async (req, res) => {
                 success: true,
                 message: "Order already created for this session.",
                 orderId: existingOrder._id,
+                orderNumber: existingOrder.orderNumber,
             });
         }
 		const session = await stripe.checkout.sessions.retrieve(sessionId);
@@ -102,7 +104,10 @@ export const checkoutSuccess = async (req, res) => {
 
 			// create a new Order
 			const products = JSON.parse(session.metadata.products);
+			const orderNumber = await getNextOrderNumber();
+			
 			const newOrder = new Order({
+				orderNumber: orderNumber,
 				user: session.metadata.userId,
 				products: products.map((product) => ({
 					product: product.id,
@@ -119,6 +124,7 @@ export const checkoutSuccess = async (req, res) => {
 				success: true,
 				message: "Payment successful, order created, and coupon deactivated if used.",
 				orderId: newOrder._id,
+				orderNumber: newOrder.orderNumber,
 			});
 		}
 	} catch (error) {
