@@ -222,3 +222,19 @@ async function updateFeaturedProductsCache() {
 		console.log("error in update cache function");
 	}
 }
+
+export const findProductByName = async (req, res) => {
+  try {
+    const { name } = req.query;
+    if (!name) {
+      return res.status(400).json({ message: "Product name is required" });
+    }
+    const product = await Product.findOne({ name: { $regex: new RegExp(`^${name}$`, "i") } });
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    res.json({ product });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
